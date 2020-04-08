@@ -1,3 +1,5 @@
-#### Footer col 1
+#### PHP
 
-Med brödtext i ett stycke som säger något trevligt om just detta block, eller kanske en lista av länkar.
+[Referensmanualen](https://www.php.net/manual/en/index.php)
+
+[Apprentice](https://phpapprentice.com/)
