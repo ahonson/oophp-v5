@@ -84,5 +84,15 @@ return [
             "url" => "dev",
             "title" => "Anax development utilities",
         ],
+        [
+            "text" => "Gissningsspel",
+            "url" => "guess-game",
+            "title" => "Mitt gissningsspel",
+        ],
+        [
+            "text" => "Dice100",
+            "url" => "dice100",
+            "title" => "Mitt tärningsspel",
+        ],
     ],
 ];
