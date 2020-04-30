@@ -38,6 +38,19 @@ class DiceGameTest extends TestCase
 
 
     /**
+     * Getting the all rolls
+     */
+    public function testGetAllRolls()
+    {
+        $diceGame = new DiceGame(3);
+        $this->assertTrue($diceGame->getAllRolls() === []);
+
+        $diceGame->roll();
+        $this->assertTrue(count($diceGame->getAllRolls()) === 3);
+    }
+
+
+    /**
      * Getting initial scores
      */
     public function testInitialScrores()

@@ -5,8 +5,10 @@ namespace arts19\Dice;
 /**
  * Guess my number, a class supporting the game through GET, POST and SESSION.
  */
-class DiceGame
+class DiceGame implements HistogramInterface
 {
+    use HistogramTrait;
+
     /**
      * Constructor to initiate a dice object with the right number of sides,
      *
@@ -28,11 +30,13 @@ class DiceGame
             array_push($this->allDices, $currentDice);
         }
 
+        $this->sides = $sides;
         $this->player1 = 0;
         $this->player2 = 0;
         $this->rounds = 0;
         $this->currentRound = 0;
         $this->currentRoll = [];
+        $this->allRolls = [];
         $this->currentPlayer = "spelaren";
     }
 
@@ -49,6 +53,7 @@ class DiceGame
         for ($i = 0; $i < $this->dices; $i++) {
             $value = $this->allDices[$i]->roll();
             array_push($this->currentRoll, $value);
+            array_push($this->allRolls, $value);
         }
         if (in_array(1, $this->currentRoll)) {
             $this->currentRound = 0;
@@ -56,7 +61,9 @@ class DiceGame
         } else {
             $this->addToRound();
             if ($this->currentPlayer === "datorn") {
-                if ($this->currentRound >= 20 ||
+                if ($this->player1 > (100 - ($this->sides * $this->dices)) &&
+                    $this->player2 + $this->currentRound < 100) {
+                } elseif ($this->currentRound >= 20 ||
                     $this->player2 + $this->currentRound >= 100) {
                     $this->quitCurrentRound();
                 }
@@ -74,6 +81,15 @@ class DiceGame
         return $this->currentRoll;
     }
 
+
+    /**
+     *
+     * @return array containing all the values of the current roll
+     */
+    public function getAllRolls()
+    {
+        return $this->allRolls;
+    }
 
 
     /**
