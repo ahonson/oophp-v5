@@ -176,7 +176,7 @@ class MovieController implements AppInjectableInterface
      *
      * @return object
      */
-    public function crudAction() : object
+    public function crudActionGet() : object
     {
         // Deal with the action and return a response.
 
@@ -198,6 +198,105 @@ class MovieController implements AppInjectableInterface
             "title" => "Filmdatabas",
         ]);
     }
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function crudActionPost() : object
+    {
+        $request = $this->app->request;
+        $response = $this->app->response;
+        // $session = $this->app->session;
+
+        $add = $request->getPost("doAdd");
+        $edit = $request->getPost("doEdit");
+        $delete = $request->getPost("doDelete");
+        $movieId = $request->getPost("movieId") ? $request->getPost("movieId") : null;
+
+
+        if (!$movieId) {
+            return $response->redirect("movie/crud");
+        } elseif ($add) {
+            return $response->redirect("movie/showall");
+        } elseif ($edit) {
+            return $response->redirect("movie/edit/${movieId}");
+        } elseif ($delete) {
+            return $response->redirect("movie/searchyear");
+        }
+    }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function editActionGet($numb) : object
+    {
+        // Deal with the action and return a response.
+
+        $this->app->db->connect();
+        $sql = "SELECT * FROM movie WHERE id = $numb;";
+        $res = $this->app->db->executeFetchAll($sql);
+
+        $data = [
+            "movie" => $res[0],
+            "numb" => $numb
+        ];
+
+
+        $page = $this->app->page;
+        $page->add("movie/header");
+        $page->add("movie/edit", $data);
+        $page->add("movie/footer");
+
+        return $page->render([
+            "title" => "Filmdatabas",
+        ]);
+    }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function editActionPost($numb) : object
+    {
+        $request = $this->app->request;
+        $response = $this->app->response;
+        // $session = $this->app->session;
+
+        $save = $request->getPost("doSave") ? $request->getPost("doSave") : null;
+
+        if ($save) {
+            $movieId = $numb; // $request->getPost("movieId");
+            $movieTitle = $request->getPost("movieTitle");
+            $movieYear = $request->getPost("movieYear");
+            $movieImage = $request->getPost("movieImage");
+
+            $this->app->db->connect();
+            $sql = "UPDATE movie SET title = '$movieTitle', year = '$movieYear', image = '$movieImage' WHERE id = '$movieId';";
+            $this->app->db->executeFetchAll($sql);
+        }
+
+        return $response->redirect("movie/showall");
+    }
+
 
 
     /**
@@ -256,41 +355,6 @@ class MovieController implements AppInjectableInterface
     }
 
 
-    /**
-     * This is the index method action, it handles:
-     * ANY METHOD mountpoint
-     * ANY METHOD mountpoint/
-     * ANY METHOD mountpoint/index
-     *
-     * @return object
-     */
-    public function processActionPost() : object
-    {
-        $request = $this->app->request;
-        $response = $this->app->response;
-        $session = $this->app->session;
-
-        $reset = $request->getPost("reset");
-        $save = $request->getPost("save");
-        $submit = $request->getPost("submit");
-
-        // if (isset($_POST["reset"])) {
-        if ($reset) {
-            // session_destroy();
-            $session->destroy();
-            return $response->redirect("dice1");
-        // } elseif (isset($_POST["submit"])) {
-        } elseif ($submit) {
-            // $_SESSION["dice"]->roll();
-            $session->get("dice")->roll();
-        // } elseif (isset($_POST["save"])) {
-        } elseif ($save) {
-            // $_SESSION["dice"]->quitCurrentRound();
-            $session->get("dice")->quitCurrentRound();
-        }
-
-        return $response->redirect("dice1/play");
-    }
 
 
 
