@@ -31,3 +31,52 @@ img.thumb {
     max-width: 100px;
     max-height: 100px;
 }
+
+table {
+    border: 1px solid #777;
+    padding: 0.5em;
+    border-collapse: collapse;
+    width: 600px;
+    margin: auto;
+}
+
+th,
+td {
+    border: 1px solid #777;
+    text-align: center;
+    padding: 0.5em;
+}
+
+th {
+    background-color: #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #dfffcf;
+}
+
+tr:nth-child(odd) {
+    background-color: #efffdf;
+}
+
+.movieNavbar {
+    width: 600px;
+    display: block;
+    /* margin: auto; */
+    margin: 40px auto;
+}
+
+.movieNavbar a {
+    border: 2px solid #171;
+    padding: 1em;
+    display: inline-block;
+    background-color: #151;
+    color: #eee;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.movieheader {
+    text-align: center;
+    margin-top: 40px;
+}

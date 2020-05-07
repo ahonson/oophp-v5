@@ -176,7 +176,7 @@ class MovieController implements AppInjectableInterface
      *
      * @return object
      */
-    public function editAction() : object
+    public function crudAction() : object
     {
         // Deal with the action and return a response.
 
@@ -191,7 +191,7 @@ class MovieController implements AppInjectableInterface
 
         $page = $this->app->page;
         $page->add("movie/header");
-        $page->add("movie/edit", $data);
+        $page->add("movie/crud", $data);
         $page->add("movie/footer");
 
         return $page->render([
