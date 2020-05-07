@@ -93,5 +93,10 @@ return [
             "url" => "dice1",
             "title" => "Mitt tärningsspel",
         ],
+        [
+            "text" => "Filmdatabas",
+            "url" => "movie",
+            "title" => "Min filmdatabas",
+        ],
     ],
 ];
