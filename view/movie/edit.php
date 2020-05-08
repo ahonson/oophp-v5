@@ -2,6 +2,8 @@
 
 namespace Anax\View;
 
+var_dump($movie);
+
 ?>
 
 <form method="post">
@@ -36,5 +38,3 @@ namespace Anax\View;
     </p>
     </fieldset>
 </form>
-
-<p>NUMBER IS <?= $numb ?></p>

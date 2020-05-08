@@ -220,10 +220,10 @@ class MovieController implements AppInjectableInterface
         $movieId = $request->getPost("movieId") ? $request->getPost("movieId") : null;
 
 
-        if (!$movieId) {
+        if ($add) {
+            return $response->redirect("movie/add");
+        } elseif (!$movieId) {
             return $response->redirect("movie/crud");
-        } elseif ($add) {
-            return $response->redirect("movie/showall");
         } elseif ($edit) {
             return $response->redirect("movie/edit/${movieId}");
         } elseif ($delete) {
@@ -250,8 +250,7 @@ class MovieController implements AppInjectableInterface
         $res = $this->app->db->executeFetchAll($sql);
 
         $data = [
-            "movie" => $res[0],
-            "numb" => $numb
+            "movie" => $res[0]
         ];
 
 
@@ -264,6 +263,41 @@ class MovieController implements AppInjectableInterface
             "title" => "Filmdatabas",
         ]);
     }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function addActionGet() : object
+    {
+        // Deal with the action and return a response.
+
+        $data = [
+            "movie" => (object) [
+                "id" => 0,
+                "title" => "A title",
+                "year" => 2017,
+                "image" => "img/noimage.png"
+            ]
+        ];
+
+
+        $page = $this->app->page;
+        $page->add("movie/header");
+        $page->add("movie/edit", $data);
+        $page->add("movie/footer");
+
+        return $page->render([
+            "title" => "Filmdatabas",
+        ]);
+    }
+
 
 
 
@@ -291,6 +325,37 @@ class MovieController implements AppInjectableInterface
 
             $this->app->db->connect();
             $sql = "UPDATE movie SET title = '$movieTitle', year = '$movieYear', image = '$movieImage' WHERE id = '$movieId';";
+            $this->app->db->executeFetchAll($sql);
+        }
+
+        return $response->redirect("movie/showall");
+    }
+
+
+
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function addActionPost() : object
+    {
+        $request = $this->app->request;
+        $response = $this->app->response;
+        // $session = $this->app->session;
+
+        $save = $request->getPost("doSave") ? $request->getPost("doSave") : null;
+
+        if ($save) {
+            $movieTitle = $request->getPost("movieTitle");
+            $movieYear = $request->getPost("movieYear");
+            $movieImage = $request->getPost("movieImage");
+
+            $this->app->db->connect();
+            $sql = "INSERT INTO movie (title, year, image) VALUES ('$movieTitle', '$movieYear', '$movieImage');";
             $this->app->db->executeFetchAll($sql);
         }
 
