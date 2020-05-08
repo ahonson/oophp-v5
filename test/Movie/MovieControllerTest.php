@@ -45,14 +45,14 @@ class MovieControllerTest extends TestCase
 
 
 
-    /**
-    * Call the controller showall action
-    */
-    public function testShowallAction()
-    {
-        $res = $this->controller->showallAction();
-        $this->assertInstanceOf(ResponseUtility::class, $res);
-    }
+    // /**
+    // * Call the controller showall action
+    // */
+    // public function testShowallAction()
+    // {
+    //     $res = $this->controller->showallAction();
+    //     $this->assertInstanceOf(ResponseUtility::class, $res);
+    // }
 
 
     // /**
