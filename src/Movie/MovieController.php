@@ -227,7 +227,7 @@ class MovieController implements AppInjectableInterface
         } elseif ($edit) {
             return $response->redirect("movie/edit/${movieId}");
         } elseif ($delete) {
-            return $response->redirect("movie/searchyear");
+            return $response->redirect("movie/delete/${movieId}");
         }
     }
 
@@ -290,7 +290,7 @@ class MovieController implements AppInjectableInterface
 
         $page = $this->app->page;
         $page->add("movie/header");
-        $page->add("movie/edit", $data);
+        $page->add("movie/create", $data);
         $page->add("movie/footer");
 
         return $page->render([
@@ -299,6 +299,38 @@ class MovieController implements AppInjectableInterface
     }
 
 
+    /**
+     * This is the index method action, it handles:
+     * ANY METHOD mountpoint
+     * ANY METHOD mountpoint/
+     * ANY METHOD mountpoint/index
+     *
+     * @return object
+     */
+    public function deleteActionGet($numb) : object
+    {
+        // Deal with the action and return a response.
+
+        $this->app->db->connect();
+        $sql = "SELECT * FROM movie WHERE id = $numb;";
+        $res = $this->app->db->executeFetchAll($sql);
+
+        $data = [
+            "movie" => $res[0],
+            "resultset" => $res
+        ];
+
+
+        $page = $this->app->page;
+        $page->add("movie/header");
+        $page->add("movie/delete", $data);
+        $page->add("movie/show_all", $data);
+        $page->add("movie/footer");
+
+        return $page->render([
+            "title" => "Filmdatabas",
+        ]);
+    }
 
 
     /**
@@ -363,7 +395,6 @@ class MovieController implements AppInjectableInterface
     }
 
 
-
     /**
      * This is the index method action, it handles:
      * ANY METHOD mountpoint
@@ -372,14 +403,23 @@ class MovieController implements AppInjectableInterface
      *
      * @return object
      */
-    public function initAction($nrOfDices) : object
+    public function deleteActionPost($numb) : object
     {
+        $request = $this->app->request;
         $response = $this->app->response;
-        $session = $this->app->session;
-        // echo "init the session for starting the game" . $arg;
-        // $_SESSION["dice"] = new DiceGame(intval(2));
-        $session->set("dice", new DiceGame($nrOfDices));
-        return $response->redirect("dice1/play");
+        // $session = $this->app->session;
+
+        $save = $request->getPost("doSave") ? $request->getPost("doSave") : null;
+
+        if ($save) {
+            $movieId = $numb; // $request->getPost("movieId");
+
+            $this->app->db->connect();
+            $sql = "DELETE FROM movie WHERE id = '$movieId';";
+            $this->app->db->executeFetchAll($sql);
+        }
+
+        return $response->redirect("movie/showall");
     }
 
 
@@ -391,49 +431,44 @@ class MovieController implements AppInjectableInterface
      *
      * @return object
      */
-    public function playActionGet() : object
+    public function resetActionGet() : object
     {
+        // Deal with the action and return a response.
+
         $page = $this->app->page;
-        $session = $this->app->session;
-
-        $data = [
-            // "player" => $_SESSION["dice"]->getScorePlayer1(),
-            // "computer" => $_SESSION["dice"]->getScorePlayer2(),
-            // "currentPlayer" => $_SESSION["dice"]->getCurrentPlayer(),
-            // "currentScore" => $_SESSION["dice"]->getCurrentRound(),
-            // "rounds" => $_SESSION["dice"]->getNrOfRounds(),
-            "player" => $session->get("dice")->getScorePlayer1(),
-            "computer" => $session->get("dice")->getScorePlayer2(),
-            "currentPlayer" => $session->get("dice")->getCurrentPlayer(),
-            "currentScore" => $session->get("dice")->getCurrentRound(),
-            "rounds" => $session->get("dice")->getNrOfRounds(),
-            "diceGame" => $session->get("dice")
-            // "x" => $x
-        ];
-
-        $page->add("dice1/play", $data);
-        // $this->app->page->add("guess/debug");
+        $page->add("movie/header");
+        $page->add("movie/reset");
+        $page->add("movie/footer");
 
         return $page->render([
-            "title" => "Dice 100",
+            "title" => "Filmdatabas",
         ]);
     }
 
 
 
-
-
     /**
      * This is the index method action, it handles:
      * ANY METHOD mountpoint
      * ANY METHOD mountpoint/
      * ANY METHOD mountpoint/index
      *
-     * @return string
+     * @return object
      */
-    public function debugAction() : string
+    public function resetActionPost() : object
     {
-        // Deal with the action and return a response.
-        return "Debug my game!!";
+        $response = $this->app->response;
+
+        if ($_SERVER["SERVER_NAME"] === "www.student.bth.se") {
+            $command = "mysql -hblu-ray.student.bth.se -uarts19 -pFHvy4Gx85J6E arts19 < ../sql/movie/setup.sql 2>&1";
+        } else {
+            $command = "mysql -uuser -ppass oophp < ../sql/movie/setup.sql 2>&1";
+        }
+
+        $output = [];
+        $status = null;
+        exec($command, $output, $status);
+
+        return $response->redirect("movie/showall");
     }
 }

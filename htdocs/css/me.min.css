@@ -60,7 +60,7 @@ tr:nth-child(odd) {
 }
 
 .movieNavbar {
-    width: 600px;
+    width: 750px;
     display: block;
     /* margin: auto; */
     margin: 40px auto;
@@ -84,4 +84,19 @@ tr:nth-child(odd) {
 .movieheader {
     text-align: center;
     margin-top: 40px;
+}
+
+.movieFooter {
+    padding: 1em;
+    border: 2px dotted #171;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 50px;
+    background-color: #eee;
+    color: #151;
+    width: 400px;
+}
+
+.movieFooter p {
+    text-align: center;
 }

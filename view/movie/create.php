@@ -6,7 +6,7 @@ namespace Anax\View;
 
 <form method="post">
     <fieldset>
-    <legend>Edit</legend>
+    <legend>Create</legend>
     <input type="hidden" name="movieId" value="<?= $movie->id ?>"/>
 
     <p>
@@ -31,8 +31,7 @@ namespace Anax\View;
         <input type="reset" value="Reset">
     </p>
     <p>
-        <a href="../crud">Select another movie</a> |
-        <a href="../showall">Show all</a>
+        <a href="showall">Show all</a>
     </p>
     </fieldset>
 </form>
