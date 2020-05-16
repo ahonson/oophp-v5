@@ -59,13 +59,18 @@ tr:nth-child(odd) {
     background-color: #efffdf;
 }
 
+.cmsNavbar,
 .movieNavbar {
     width: 750px;
     display: block;
-    /* margin: auto; */
     margin: 40px auto;
 }
 
+.cmsNavbar {
+    width: 850px;
+}
+
+.cmsNavbar a,
 .movieNavbar a {
     border: 2px solid #171;
     padding: 1em;
@@ -76,16 +81,19 @@ tr:nth-child(odd) {
     text-decoration: none;
 }
 
+.cmsNavbar a:hover,
 .movieNavbar a:hover {
     background-color: #031;
     color: #ffa;
 }
 
+.cmsheader,
 .movieheader {
     text-align: center;
     margin-top: 40px;
 }
 
+.cmsFooter,
 .movieFooter {
     padding: 1em;
     border: 2px dotted #171;
@@ -97,6 +105,18 @@ tr:nth-child(odd) {
     width: 400px;
 }
 
+.cmsFooter p,
 .movieFooter p {
     text-align: center;
+}
+
+.danger {
+    background-color: #f1d1d4;
+    border-radius: 5px;
+    border: 2px #f00 solid;
+    color: #8b0000;
+    max-width: 640px;
+    margin: auto;
+    padding: 15px;
+    margin-bottom: 20px;
 }

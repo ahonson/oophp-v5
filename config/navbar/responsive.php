@@ -99,5 +99,15 @@ return [
             "url" => "movie",
             "title" => "Min filmdatabas",
         ],
+        [
+            "text" => "MyTextFilter",
+            "url" => "mytextfilter",
+            "title" => "MyTextFilter",
+        ],
+        [
+            "text" => "CMS",
+            "url" => "cms",
+            "title" => "CMS",
+        ],
     ],
 ];
